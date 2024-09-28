@@ -13,5 +13,5 @@ output:
 
 I am interested in exploring data related to... 
 - The election
-- Healthcare
-- Public health
+- Healthcare: healthcare inequality
+- Public health: Maybe chronic disease & food additives? I've always been interested in exploring topics related to public health and think exploring related data would be really interesting & beneficial to have as a project. 
