@@ -7,11 +7,13 @@ output:
     self_contained: false
 ---
 
-
-
 ## Project thoughts
 
 I am interested in exploring data related to... 
 - The election
 - Healthcare: healthcare inequality
 - Public health: Maybe chronic disease & food additives? I've always been interested in exploring topics related to public health and think exploring related data would be really interesting & beneficial to have as a project. 
+
+## Research Question
+
+How does an individual's weight relate to their level of physical activity, measured by daily steps taken and active calories burned? This research question will be answered based on data from the 'health' data set in 'ps270data'. I predict that if an individual is more physically active one day, they will have a lower body weight than on days they are more sedentary. This is based on the precedent that physical activity burns calories and makes people lose weight. My explanatory variables are steps per day and active calories, both of which are measured via internet tracking connected devices. Although these variables can vary across individuals, this data set can provide a reasonable outcome that can be applied as a general trend across a larger population. The outcome variable is body weight, which will be measured daily. If there is a negative correlation between weight and physical activity levels, the findings will support my hypothesis that individuals who are more physically active tend to weigh less. However, no clear relationship between physical activity levels and weight and/or weight increasing with physical activity would disprove my hypothesis. 
