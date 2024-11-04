@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.28/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","Lecture-12.pdf","Lecture-8.pdf"]}
+  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.28/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","Lecture-12.pdf","Lecture-8.pdf","Website-code.html"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1547,9 +1547,84 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>I am interested in exploring data related to…
 - The election
 - Healthcare: healthcare inequality
-- Public health: Maybe chronic disease &amp; food additives? I’ve always been interested in exploring topics related to public health and think exploring related data would be really interesting &amp; beneficial to have as a project.</p>
+- Public Health: Maybe chronic disease &amp; food additives? I’ve always been interested in exploring topics related to public health and think exploring related data would be really interesting &amp; beneficial to have as a project.
+- Media Bias</p>
 <h2 id="research-question">Research Question</h2>
-<p>Do perspectives on media bias relate to party affiliation? In this study, I plan to examine to what extent individual beliefs on the importance of punishing mainstream media bias relate to which political party the individual identifies as. I hypothesize that there is a relationship between political parties and how individuals within them value the importance of addressing media bias, with members of the Republican Party being more likely to view media bias as more extreme. In today’s political climate, claims of media bias and partisan news stations are rampant, targeting both political parties and many organizations. However, I believe that with former President Donald Trump’s rampant and relentless rants on the dangers of fake news, that Republicans are more likely to see this is a major issue. Additionally, with the events of January 6 of Republicans storming the country capital, I also think it likely for Republicans to follow through with taking action against “false claims,” whether these claims are toward election results or general mainstream media, and therefore answer this survey that the mainstream media “should be punished” for its bias. My explanatory variable is how much respondents agree with the claim “the mainstream media is biased and should be punished.” Their responses are measured on a scale of 1 to 4, with 1 being they strongly disagree with the statement and 4 being they strongly agree. My outcome variable is party affiliation, with 1 meaning they are a democrat, 2 meaning they are a republican, 3 meaning they are independent, and 4 meaning they identify with another political party. If respondents who more strongly agreed with the mainstream media being biased and having to be punished are more likely to identify as republican, then my hypothesis will be supported by the results. However, if the results don’t indicate perspectives on media bias relate to a specific political party, or if they show democrats or independents are more likely to see the mainstream media as biased, then the results will not support my initial hypothesis.</p>
+<p>Do perspectives on media bias relate to party affiliation? In this study, I plan to examine to what extent individual beliefs on the importance of punishing mainstream media bias relate to which political party the individual identifies as. I hypothesize that there is a relationship between political parties and how individuals within them value the importance of addressing media bias, with members of the Republican Party being more likely to view media bias as more extreme. In today’s political climate, claims of media bias and partisan news stations are rampant, targeting both political parties and many organizations. However, I believe that with former President Donald Trump’s rampant and relentless rants on the dangers of fake news, that Republicans are more likely to see this is a major issue. Additionally, with the events of January 6 of Republicans storming the country capital, I also think it likely for Republicans to follow through with taking action against “false claims,” whether these claims are toward election results or general mainstream media, and therefore answer this survey that the mainstream media “should be punished” for its bias. My explanatory variable is how much respondents agree with the claim “the mainstream media is biased and should be punished.” Their responses are measured on a scale of 1 to 4, with 1 being they strongly agree with the statement and 4 being they strongly disagree. I will simplify this to simply agreeing and disagreeing to get a general overview. My outcome variable is party affiliation, with 1 meaning they are a democrat, and 2 meaning they are a republican in the dataset. If respondents who more strongly agreed with the mainstream media being biased and having to be punished are more likely to identify as republican, then my hypothesis will be supported by the results. However, if the results don’t indicate perspectives on media bias relate to a specific political party, or if they show democrats or independents are more likely to see the mainstream media as biased, then the results will not support my initial hypothesis.</p>
+<h2 id="loaded-dataset">Loaded Dataset</h2>
+<p>Reuters/Ipsos Large Sample Survey 1: January 2024</p>
+<p>Sample: National audit</p>
+<p>Sample Size : 4677</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readr.tidyverse.org'>readr</a></span><span class='op'>)</span></span>
+<span><span class='va'>X31120717</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"~/Downloads/31120717.csv"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="data-visualization">Data Visualization</h2>
+<p>For my data visualization, I filtered the dataset first by PARTYID and the survey question TM3212Y24_8 on media bias. The statement respondents answered was: “The mainstream media is biased and should be punished.” By filtering the data by rows to sort by Democrats and Republicans, vectorising statements for visual clarity, creating new variables, and finding the sum of responses agreeing and disagreeing with the statement, I ended up with a neat table grouped by the two political parties. This table divides the respondents by their two different parties, and counts the respondents answers. From this initial visualization, I can see in this survey the majority of Democrats disagreed with the statement on media bias, and the majority of Republicans agreed with it, supporting my initial hypothesis.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>party_vs_bias</span> <span class='op'>&lt;-</span> <span class='va'>X31120717</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>PARTYID</span>, <span class='va'>TM3212Y24_8</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>PARTYID <span class='op'>=</span> <span class='fu'>haven</span><span class='fu'>::</span><span class='fu'><a href='https://forcats.tidyverse.org/reference/as_factor.html'>as_factor</a></span><span class='op'>(</span><span class='va'>PARTYID</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARTYID</span> <span class='op'>==</span> <span class='st'>"A Republican"</span> <span class='op'>|</span> </span>
+<span>         <span class='va'>PARTYID</span> <span class='op'>==</span> <span class='st'>"A Democrat"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Bias <span class='op'>=</span> <span class='fu'>haven</span><span class='fu'>::</span><span class='fu'><a href='https://forcats.tidyverse.org/reference/as_factor.html'>as_factor</a></span><span class='op'>(</span><span class='va'>TM3212Y24_8</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Party <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
+<span>    <span class='va'>PARTYID</span> <span class='op'>==</span> <span class='st'>"A Republican"</span> <span class='op'>~</span> <span class='st'>"Republican"</span>,</span>
+<span>    <span class='va'>PARTYID</span> <span class='op'>==</span> <span class='st'>"A Democrat"</span> <span class='op'>~</span> <span class='st'>"Democrat"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>party_vs_bias</span> <span class='op'>&lt;-</span> <span class='va'>party_vs_bias</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Party</span>, <span class='va'>Bias</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Bias</span> <span class='op'>==</span> <span class='st'>"Strongly agree"</span> <span class='op'>|</span> </span>
+<span>         <span class='va'>Bias</span> <span class='op'>==</span> <span class='st'>"Somewhat agree"</span> <span class='op'>|</span> </span>
+<span>         <span class='va'>Bias</span> <span class='op'>==</span> <span class='st'>"Somewhat disagree"</span> <span class='op'>|</span> </span>
+<span>         <span class='va'>Bias</span> <span class='op'>==</span> <span class='st'>"Strongly disagree"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>Party</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>bias_sum <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
+<span>    <span class='va'>Bias</span> <span class='op'>==</span> <span class='st'>"Strongly agree"</span> <span class='op'>~</span> <span class='st'>"Agree"</span>,</span>
+<span>    <span class='va'>Bias</span> <span class='op'>==</span> <span class='st'>"Somewhat agree"</span> <span class='op'>~</span> <span class='st'>"Agree"</span>,</span>
+<span>    <span class='va'>Bias</span> <span class='op'>==</span> <span class='st'>"Strongly disagree"</span> <span class='op'>~</span> <span class='st'>"Disagree"</span>,</span>
+<span>    <span class='va'>Bias</span> <span class='op'>==</span> <span class='st'>"Somewhat disagree"</span> <span class='op'>~</span> <span class='st'>"Disagree"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>party_vs_bias_table</span> <span class='op'>&lt;-</span> <span class='va'>party_vs_bias</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>bias_sum</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>bias_sum</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='op'>(</span>names_from <span class='op'>=</span> <span class='va'>bias_sum</span>, </span>
+<span>              values_from <span class='op'>=</span> <span class='va'>n</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>party_vs_bias_table</span><span class='op'>)</span></span></code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Party</th>
+<th style="text-align: right;">Agree</th>
+<th style="text-align: right;">Disagree</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Democrat</td>
+<td style="text-align: right;">384</td>
+<td style="text-align: right;">868</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Republican</td>
+<td style="text-align: right;">1071</td>
+<td style="text-align: right;">233</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

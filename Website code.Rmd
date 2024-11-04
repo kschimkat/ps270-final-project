@@ -1,0 +1,57 @@
+---
+title: "Website code"
+output: html_document
+date: "2024-11-04"
+---
+
+```{r}
+library(tidyverse)
+library(readr)
+X31120717 <- read_csv("~/Downloads/31120717.csv")
+```
+
+Strongly agree = 1
+somewhat agree = 2
+somewhat disagree = 3
+strongly disagree = 4
+
+
+```{r}
+X31120717
+```
+
+
+```{r}
+party_vs_bias <- X31120717 |>
+  select(PARTYID, TM3212Y24_8) |>
+  mutate(PARTYID = haven::as_factor(PARTYID)) |>
+  filter(PARTYID == "A Republican" | PARTYID == "A Democrat") |>
+  mutate(Bias = haven::as_factor(TM3212Y24_8)) |>
+  mutate(Party = case_when(PARTYID == "A Republican" ~ "Republican",
+                             PARTYID == "A Democrat" ~ "Democrat"))
+
+
+party_vs_bias
+```
+
+```{r}
+party_vs_bias <- party_vs_bias |>
+  select(Party, Bias) |>
+  filter(Bias == "Strongly agree" | Bias == "Somewhat agree" | Bias == "Somewhat disagree" | Bias == "Strongly disagree") |>
+  group_by(Party) |> 
+  mutate(bias_sum = case_when(Bias == "Strongly agree" ~ "Agree",
+                              Bias == "Somewhat agree" ~ "Agree",
+                              Bias == "Strongly disagree" ~ "Disagree",
+                              Bias == "Somewhat disagree" ~ "Disagree"))
+
+party_vs_bias
+```
+
+```{r}
+party_vs_bias_table <- party_vs_bias |>
+  count(bias_sum) |>
+  group_by(bias_sum) |>
+  pivot_wider(names_from = bias_sum, values_from = n)
+
+knitr::kable(party_vs_bias_table)
+```

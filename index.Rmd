@@ -12,8 +12,75 @@ output:
 I am interested in exploring data related to... 
 - The election
 - Healthcare: healthcare inequality
-- Public health: Maybe chronic disease & food additives? I've always been interested in exploring topics related to public health and think exploring related data would be really interesting & beneficial to have as a project. 
+- Public Health: Maybe chronic disease & food additives? I've always been interested in exploring topics related to public health and think exploring related data would be really interesting & beneficial to have as a project. 
+- Media Bias
 
 ## Research Question
 
-Do perspectives on media bias relate to party affiliation? In this study, I plan to examine to what extent individual beliefs on the importance of punishing mainstream media bias relate to which political party the individual identifies as. I hypothesize that there is a relationship between political parties and how individuals within them value the importance of addressing media bias, with members of the Republican Party being more likely to view media bias as more extreme. In today's political climate, claims of media bias and partisan news stations are rampant, targeting both political parties and many organizations. However, I believe that with former President Donald Trump's rampant and relentless rants on the dangers of fake news, that Republicans are more likely to see this is a major issue. Additionally, with the events of January 6 of Republicans storming the country capital, I also think it likely for Republicans to follow through with taking action against "false claims," whether these claims are toward election results or general mainstream media, and therefore answer this survey that the mainstream media "should be punished" for its bias. My explanatory variable is how much respondents agree with the claim "the mainstream media is biased and should be punished." Their responses are measured on a scale of 1 to 4, with 1 being they strongly disagree with the statement and 4 being they strongly agree. My outcome variable is party affiliation, with 1 meaning they are a democrat, 2 meaning they are a republican, 3 meaning they are independent, and 4 meaning they identify with another political party. If respondents who more strongly agreed with the mainstream media being biased and having to be punished are more likely to identify as republican, then my hypothesis will be supported by the results. However, if the results don't indicate perspectives on media bias relate to a specific political party, or if they show democrats or independents are more likely to see the mainstream media as biased, then the results will not support my initial hypothesis.  
+Do perspectives on media bias relate to party affiliation? In this study, I plan to examine to what extent individual beliefs on the importance of punishing mainstream media bias relate to which political party the individual identifies as. I hypothesize that there is a relationship between political parties and how individuals within them value the importance of addressing media bias, with members of the Republican Party being more likely to view media bias as more extreme. In today's political climate, claims of media bias and partisan news stations are rampant, targeting both political parties and many organizations. However, I believe that with former President Donald Trump's rampant and relentless rants on the dangers of fake news, that Republicans are more likely to see this is a major issue. Additionally, with the events of January 6 of Republicans storming the country capital, I also think it likely for Republicans to follow through with taking action against "false claims," whether these claims are toward election results or general mainstream media, and therefore answer this survey that the mainstream media "should be punished" for its bias. My explanatory variable is how much respondents agree with the claim "the mainstream media is biased and should be punished." Their responses are measured on a scale of 1 to 4, with 1 being they strongly agree with the statement and 4 being they strongly disagree. I will simplify this to simply agreeing and disagreeing to get a general overview. My outcome variable is party affiliation, with 1 meaning they are a democrat, and 2 meaning they are a republican in the dataset. If respondents who more strongly agreed with the mainstream media being biased and having to be punished are more likely to identify as republican, then my hypothesis will be supported by the results. However, if the results don't indicate perspectives on media bias relate to a specific political party, or if they show democrats or independents are more likely to see the mainstream media as biased, then the results will not support my initial hypothesis.  
+
+## Loaded Dataset
+
+Reuters/Ipsos Large Sample Survey 1: January 2024
+
+Sample: National audit
+
+Sample Size : 4677
+
+```{r}
+library(tidyverse)
+library(readr)
+X31120717 <- read_csv("~/Downloads/31120717.csv")
+```
+
+## Data Visualization
+
+For my data visualization, I filtered the dataset first by PARTYID and the survey question TM3212Y24_8 on media bias. The statement respondents answered was: "The mainstream media is biased and should be punished." By filtering the data by rows to sort by Democrats and Republicans, vectorising statements for visual clarity, creating new variables, and finding the sum of responses agreeing and disagreeing with the statement, I ended up with a neat table grouped by the two political parties. This table divides the respondents by their two different parties, and counts the respondents answers. From this initial visualization, I can see in this survey the majority of Democrats disagreed with the statement on media bias, and the majority of Republicans agreed with it, supporting my initial hypothesis. 
+
+```{r}
+party_vs_bias <- X31120717 |>
+  select(PARTYID, TM3212Y24_8) |>
+  mutate(PARTYID = haven::as_factor(PARTYID)) |>
+  filter(PARTYID == "A Republican" | 
+         PARTYID == "A Democrat") |>
+  mutate(Bias = haven::as_factor(TM3212Y24_8)) |>
+  mutate(Party = case_when(
+    PARTYID == "A Republican" ~ "Republican",
+    PARTYID == "A Democrat" ~ "Democrat"))
+```
+
+```{r}
+party_vs_bias <- party_vs_bias |>
+  select(Party, Bias) |>
+  filter(Bias == "Strongly agree" | 
+         Bias == "Somewhat agree" | 
+         Bias == "Somewhat disagree" | 
+         Bias == "Strongly disagree") |>
+  group_by(Party) |> 
+  mutate(bias_sum = case_when(
+    Bias == "Strongly agree" ~ "Agree",
+    Bias == "Somewhat agree" ~ "Agree",
+    Bias == "Strongly disagree" ~ "Disagree",
+    Bias == "Somewhat disagree" ~ "Disagree"))
+```
+
+```{r}
+party_vs_bias_table <- party_vs_bias |>
+  count(bias_sum) |>
+  group_by(bias_sum) |>
+  pivot_wider(names_from = bias_sum, 
+              values_from = n)
+
+knitr::kable(party_vs_bias_table)
+```
+
+
+
+
+
+
+
+
+
+
+
