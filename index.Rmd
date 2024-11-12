@@ -71,7 +71,7 @@ party_vs_bias_table <- party_vs_bias |>
   pivot_wider(names_from = bias_sum, 
               values_from = n)
 
-knitr::kable(party_vs_bias_table)
+knitr::kable(party_vs_bias_table, caption = "Do respondents agree or disagree with the statement: The mainstream media is biased and should be punished.")
 ```
 
 
