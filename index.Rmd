@@ -74,10 +74,22 @@ party_vs_bias_table <- party_vs_bias |>
 knitr::kable(party_vs_bias_table, caption = "Do respondents agree or disagree with the statement: The mainstream media is biased and should be punished.")
 ```
 
+## Data Analysis
 
+Results:
 
+```{r}
+party_vs_bias |>
+  count(bias_sum) |>
+  group_by(bias_sum, Party) |>
+  summarize(bias_sum_n = mean(n)) |>
+  ggplot(aes(x = bias_sum, y = bias_sum_n, fill = Party)) +
+  geom_col(position = "dodge") +
+  scale_fill_manual(values = c(Democrat = "steelblue1", Republican = "indianred1")) +
+  labs(x = "Opinion", y = "Number of Respondents", title = "Do Respondents Agree or Disagree the Mainstream Media is Biased?")
+```
 
-
+In this survey, there is a clear divide between Democrats and Republicans on their opinions of media bias. Respondents either agreed or disagreed with the statement: "The mainstream media is biased and should be punished." In these results, the majority of Republicans agreed and the majority of Democrats disagreed with the statement. My final data visualization also shows a larger divide within the Republican party than Democrats on media bias, with 1071 Republicans saying that they agreed with the statement and 233 saying they disagreed, both the tallest and shortest columns on the graph. Overall, these overall results support my hypothesis that respondents agreeing with the statement on media bias are more likely to identify with the Republican party. 
 
 
 
