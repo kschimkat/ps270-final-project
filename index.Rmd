@@ -53,7 +53,7 @@ party_vs_bias_table <- party_vs_bias |>
 
 # Knit
 knitr::kable(party_vs_bias_table, 
-             caption = "<b>Do Respondents Agree or Disagree With the Statement: The Mainstream Media is Biased and Should be Punished.",
+             caption = "<b>Do Respondents Agree or Disagree the Mainstream Media is Biased?",
              align = c('l', 'c', 'c', 'c', 'c')) |>
   kable_styling(latex_options = c("striped", "hold_position")) |>
   row_spec(row = 1, background = "steelblue1") |>
