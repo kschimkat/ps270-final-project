@@ -1,43 +1,30 @@
 ---
-title: "PS270 Final Project"
+title: "Politics and Media Bias"
 author: "Kate Schimkat"
-description: "My final project"
+description: "An Analysis of Political Parties' Perceptions of Bias in the Media"
 output:
   distill::distill_article:
     self_contained: false
 ---
 
-## Project thoughts
+## Introduction
 
-I am interested in exploring data related to... 
-- The election
-- Healthcare: healthcare inequality
-- Public Health: Maybe chronic disease & food additives? I've always been interested in exploring topics related to public health and think exploring related data would be really interesting & beneficial to have as a project. 
-- Media Bias
+Do perspectives on media bias relate to party affiliation? In this study, I plan to examine to what extent individual beliefs on the importance of punishing mainstream media bias relate to which political party the individual identifies as. I hypothesize that there is a relationship between political parties and how individuals within them value the importance of addressing media bias, with members of the Republican Party being more likely to view media bias as more extreme. In today's political climate, claims of media bias and partisan news stations are rampant, targeting both political parties and many organizations. However, I believe that with former and incoming President Donald Trump's rampant and relentless rants on the dangers of fake news, that Republicans are more likely to see this is a major issue. Additionally, with the events of January 6 of Republicans storming the country capital, I also think it likely for Republicans to follow through with taking action against "false claims," whether these claims are toward election results or general mainstream media, and therefore answer this survey that the mainstream media "should be punished" for its bias. My explanatory variable is how much respondents agree with the claim "the mainstream media is biased and should be punished." Their responses are measured from strongly agree to strongly disagree, or as I measure it later on on a scale of 4 to 1. My outcome variable is party affiliation, with 1 meaning they are a democrat, and 2 meaning they are a republican in the dataset. If respondents who more strongly agreed with the mainstream media being biased and having to be punished are more likely to identify as republican, then my hypothesis will be supported by the results. However, if the results don't indicate perspectives on media bias relate to a specific political party, or if they show democrats or independents are more likely to see the mainstream media as biased, then the results will not support my initial hypothesis.  
 
-## Research Question
+## Data
 
-Do perspectives on media bias relate to party affiliation? In this study, I plan to examine to what extent individual beliefs on the importance of punishing mainstream media bias relate to which political party the individual identifies as. I hypothesize that there is a relationship between political parties and how individuals within them value the importance of addressing media bias, with members of the Republican Party being more likely to view media bias as more extreme. In today's political climate, claims of media bias and partisan news stations are rampant, targeting both political parties and many organizations. However, I believe that with former President Donald Trump's rampant and relentless rants on the dangers of fake news, that Republicans are more likely to see this is a major issue. Additionally, with the events of January 6 of Republicans storming the country capital, I also think it likely for Republicans to follow through with taking action against "false claims," whether these claims are toward election results or general mainstream media, and therefore answer this survey that the mainstream media "should be punished" for its bias. My explanatory variable is how much respondents agree with the claim "the mainstream media is biased and should be punished." Their responses are measured on a scale of 1 to 4, with 1 being they strongly agree with the statement and 4 being they strongly disagree. I will simplify this to simply agreeing and disagreeing to get a general overview. My outcome variable is party affiliation, with 1 meaning they are a democrat, and 2 meaning they are a republican in the dataset. If respondents who more strongly agreed with the mainstream media being biased and having to be punished are more likely to identify as republican, then my hypothesis will be supported by the results. However, if the results don't indicate perspectives on media bias relate to a specific political party, or if they show democrats or independents are more likely to see the mainstream media as biased, then the results will not support my initial hypothesis.  
-
-## Loaded Dataset
-
-Reuters/Ipsos Large Sample Survey 1: January 2024
-
-Sample: National audit
-
-Sample Size : 4677
+The data I chose to analyze in this project is the Reuters/Ipses Large Sample Survey 1, published in January of 2024. It was a National audit, with a sample size of 4677. Data was collected through a cross-sectional survey. The two variables I will be analyzing to test my hypothesis are titled "X31120717" and "PARTYID." X31120717 entails respondents' answers to the statement: "The mainstream media is biased and should be punished." Respondents were asked to identify how much they agree/disagree on the statement, having the option to select "Strongly Agree," "Somewhat Agree," "Somewhat Disagree," or "Strongly Disagree." To note, there was also the option to write in they didn't have an answer/didn't know, and I filtered out these respondents for the purpose of this specific project. PARTYID corresponds to the political parties the respondents chose to self-identify as, and I also filtered these to Democrats and Republicans. 
 
 ```{r}
+# Load Packages 
 library(tidyverse)
 library(readr)
+library(kableExtra)
+
+# Load Dataset
 X31120717 <- read_csv("~/Downloads/31120717.csv")
-```
 
-## Data Visualization
-
-For my data visualization, I filtered the dataset first by PARTYID and the survey question TM3212Y24_8 on media bias. The statement respondents answered was: "The mainstream media is biased and should be punished." By filtering the data by rows to sort by Democrats and Republicans, vectorising statements for visual clarity, creating new variables, and finding the sum of responses agreeing and disagreeing with the statement, I ended up with a neat table grouped by the two political parties. This table divides the respondents by their two different parties, and counts the respondents answers. From this initial visualization, I can see in this survey the majority of Democrats disagreed with the statement on media bias, and the majority of Republicans agreed with it, supporting my initial hypothesis. 
-
-```{r}
+# Filter by Democrats and Republicans
 party_vs_bias <- X31120717 |>
   select(PARTYID, TM3212Y24_8) |>
   mutate(PARTYID = haven::as_factor(PARTYID)) |>
@@ -47,51 +34,79 @@ party_vs_bias <- X31120717 |>
   mutate(Party = case_when(
     PARTYID == "A Republican" ~ "Republican",
     PARTYID == "A Democrat" ~ "Democrat"))
-```
 
-```{r}
+# Filter Bias Variable
 party_vs_bias <- party_vs_bias |>
   select(Party, Bias) |>
   filter(Bias == "Strongly agree" | 
          Bias == "Somewhat agree" | 
          Bias == "Somewhat disagree" | 
-         Bias == "Strongly disagree") |>
-  group_by(Party) |> 
-  mutate(bias_sum = case_when(
-    Bias == "Strongly agree" ~ "Agree",
-    Bias == "Somewhat agree" ~ "Agree",
-    Bias == "Strongly disagree" ~ "Disagree",
-    Bias == "Somewhat disagree" ~ "Disagree"))
-```
+         Bias == "Strongly disagree") 
 
-```{r}
+# Create Table
 party_vs_bias_table <- party_vs_bias |>
-  count(bias_sum) |>
-  group_by(bias_sum) |>
-  pivot_wider(names_from = bias_sum, 
+  group_by(Party, Bias) |>
+  count(Bias) |>
+  group_by(Party) |>
+  pivot_wider(names_from = Bias, 
               values_from = n)
 
-knitr::kable(party_vs_bias_table, caption = "Do respondents agree or disagree with the statement: The mainstream media is biased and should be punished.")
+# Knit
+knitr::kable(party_vs_bias_table, 
+             caption = "<b>Do Respondents Agree or Disagree With the Statement: The Mainstream Media is Biased and Should be Punished.",
+             align = c('l', 'c', 'c', 'c', 'c')) |>
+  kable_styling(latex_options = c("striped", "hold_position")) |>
+  row_spec(row = 1, background = "steelblue1") |>
+  row_spec(row = 2, background = "indianred1")
 ```
 
-## Data Analysis
+For my first data visualization, I initially filtered the dataset first by PARTYID and the survey question TM3212Y24_8 on media bias. I re-named the dataset, filtered the data by Democrats and Republicans, cleaned up responses for visual simplicity, filtered out responses on bias that were unsure, and then I was able to end up with a neat table grouped by the two political parties showing the number of responses agreeing and disagreeing with the media bias statement. This table divides the respondents by their two different parties, and counts the respondents answers. For Democrats, 97 strongly agreed with the statement, 287 somewhat agreed, 554 strongly disagreed, and 314 somewhat disagreed. For Republicans, 621 strongly agreed with the statement, 450 somewhat agreed, 79 strongly disagreed, and 154 somewhat disagreed. 
 
-Results:
+## Results
 
 ```{r}
-party_vs_bias |>
-  count(bias_sum) |>
-  group_by(bias_sum, Party) |>
-  summarize(bias_sum_n = mean(n)) |>
-  ggplot(aes(x = bias_sum, y = bias_sum_n, fill = Party)) +
+# Create Bar Graph
+party_vs_bias_graph <- party_vs_bias |>
+  group_by(Party, Bias) |>
+  count(Bias) |> 
+  ggplot(aes(x = Bias, 
+             y = n, 
+             fill = Party)) +
   geom_col(position = "dodge") +
-  scale_fill_manual(values = c(Democrat = "steelblue1", Republican = "indianred1")) +
-  labs(x = "Opinion", y = "Number of Respondents", title = "Do Respondents Agree or Disagree the Mainstream Media is Biased?")
+  scale_fill_manual(values = c(
+    Democrat = "steelblue1", 
+    Republican = "indianred1")) +
+  labs(x = "Response", 
+       y = "Number of Respondents", 
+       title = "Do Respondents Agree or Disagree the Mainstream Media is Biased?") +
+  theme_minimal()
+party_vs_bias_graph
 ```
 
-In this survey, there is a clear divide between Democrats and Republicans on their opinions of media bias. Respondents either agreed or disagreed with the statement: "The mainstream media is biased and should be punished." In these results, the majority of Republicans agreed and the majority of Democrats disagreed with the statement. My final data visualization also shows a larger divide within the Republican party than Democrats on media bias, with 1071 Republicans saying that they agreed with the statement and 233 saying they disagreed, both the tallest and shortest columns on the graph. Overall, these overall results support my hypothesis that respondents agreeing with the statement on media bias are more likely to identify with the Republican party. 
+In this survey, there is a clear divide between Democrats and Republicans on their opinions of media bias. In these results, Republicans mainly agreed and Democrats mainly disagreed with the statement. My final data visualization also shows a larger divide within the Republican party than Democrats on media bias, with 621 Republicans saying that they strongly agreed with the statement and 79 saying they strongly disagreed, both the tallest and shortest columns on the graph. It's interesting to note that there are larger gaps between parties when they either strongly agreed or strongly disagreed with the statement, versus respondents who answered a version of "somewhat." However, even with the responses that were less strong, they still follow the same pattern of republicans agreeing and democrats disagreeing over the other. There also seems to be more dissent among the Republican party. Overall, these overall results support my hypothesis that respondents agreeing with the statement on media bias are more likely to identify with the Republican party. 
 
+```{r}
+# Turn Bias Variable Into Numerical Scale
+party_vs_bias_fit <- party_vs_bias |>
+  mutate(bias_sum = case_when(
+    Bias == "Strongly agree" ~ "4",
+    Bias == "Somewhat agree" ~ "3",
+    Bias == "Somewhat disagree" ~ "2",
+    Bias == "Strongly disagree" ~ "1"))
 
+# Run Linear Regression
+fit <- lm(bias_sum ~ Party, data = party_vs_bias_fit)
+modelsummary::modelsummary(fit,
+                           statistic = c("s.e. = {std.error}",
+                                         "p = {p.value}"),
+                           gof_map = c("nobs", "r.squared", "adj.r.squared"))
+```
+
+In this linear regression, the intercept is about 1.942. This represents the average Bias response for Democrats, which are the baseline group. The estimate for the Republican Party is about 1.295, showing that on average Republican's responses on media bias were 1.295 points higher on the 1-4 bias_sum scale shown above compared to Democrats. These results show that on average, Democrats mainly disagreed (lower average scores) with the statement on media bias and Republicans mainly agreed (higher average scores). The overall p-value is <2e-16, revealing that this result is statistically significant. However, I would be wary of interpreting this result causally due to many potential confounders, including varying demographics, education level, regions, and access to a variety of news sources, etc. Therefore, the result is statistically significant however with preliminary survey data we should not interpret it causally. 
+
+## Conclusion
+
+In conclusion, in this project I analyzed cross-sectional survey data, specifically on party affiliation and media bias. The variable I analyzed on media bias was respondents' opinions on the statement: "The mainstream media is biased and should be punished." I included one main table showing the number of responses for the statement grouped by political parties. Then, I also created an insightful bar graph that depicts these responses visually. My results clearly show that on average republicans agreed more with the statement on media bias, and democrats disagreed more with the statement. However, as stated in my results section under the linear regression, there is strong evidence pointing towards these results being statistically significant but we should not interpret this causally according to political party without further analysis. There were some respondents that chose not to answer the question, or selected they didn't know, which I filtered out of my analysis. There are also many possible confounders that could affect these results, including demographics, education level, geographic regions (news deserts, etc.), preference of media outlets, and more. In additional research it would also be important to take into account how strongly respondents identify with their political party of choice. Since my results included an ordinal variable, I assigned the Bias responses to a scale of 1-4 for regression and interpretation purposes. However, it's also important to note that interpreting categories to numerical scales isn't a perfectly exact representation. If I had more time and the financial means to conduct further research on this, I would conduct a survey for the purpose of this specific project, and not take data from a national audit with many different questions. I could explore results over a longer period of time and track whether changes in political parties' perceptions of media bias change as changes in the media and political parties occur.I would prioritize keeping track of demographic data, education, regions, and specific forms of media consumption to account for the various possible confounders, and I would include these in my regression analysis. Overall, my results in this project did support my hypothesis and show that republicans were more likely to view media bias as more extreme of an issue than democrats.
 
 
 

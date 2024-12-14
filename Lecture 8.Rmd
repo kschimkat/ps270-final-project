@@ -1,0 +1,129 @@
+---
+title: "Lecture 8"
+output: pdf_document
+date: "2024-09-30"
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ps270data)
+```
+
+## Observational Studies
+
+Do newspaper endorsements matter?
+  Can newspaper endorsements change voters' minds?
+  Why not compare vote choice of readers of different papers? 
+    Problem: readers choose papers based on their previous beliefs 
+
+Study for today: British newspapers switching their endorsements
+  Some newspapers endorsing Tories in 1992 switched to Labour in 1997.
+  Treated group: readers of Tory -> Labour papers.
+  Control group: readers of Tory who didn't switch. 
+  
+Load dataset:
+
+```{r}
+newspapers
+```
+  
+Example of an observational study:
+  We as researchers observe a naturally assigned treatment.
+  Very common: often can't randomize for ethical/logical reasons. 
+  
+Internal validity: are the causal assumption satisfied? Can we interpret this as a causal effect? 
+  RCTs usually have higher internal validity
+  Observational studies less so because treatment and control groups may differ in ways that are hard to measure 
+
+External validity: can the conclusions/estimated effects be generalized beyond this study?
+  RCTs weaker here because often very expensive to conduct on representative samples
+  Observational studies often have larger/more representative samples that improve external validity
+  
+Confounder: pre-treatment variable affecting treatment & the outcome. 
+
+Confounding bias in the estimated SATE fue to these differences. 
+  If our control group is different from our treatment group in terms of confounders, then it's not a good proxy
+  
+## Research designs
+
+How can we find a good comparison group?
+
+Depends on the data we have available.
+
+Three general types of observational study research designs:
+1. Cross-sectional design: compare outcomes treated and control units at one point in time.
+      Assumption: groups identical on average; sometimes called unconfoundedness or as-if randomized 
+2. Before and after design: compare outcomes before and after a unit has been treated, but need over-time data on treated group
+      Advantage: all person-specific features held fixed
+      Assumption: no time-varying confounders
+3. Difference-in-differences design: use the before/after difference of control group to infer what would have happened to treatment group without treatment 
+      Change in treated group above and beyond the change in control group
+      Assumption: parallel trends 
+  
+Let's calculate the cross-sectional estimate:
+
+```{r}
+switched <- newspapers |>
+  filter(to_labour == 1) |>
+  summarize(mean(vote_lab_97))
+
+no_change <- newspapers |>
+  filter(to_labour == 0) |>
+  summarize(mean(vote_lab_97))
+
+switched - no_change
+```
+  
+Statistical control: adjust for confounders using statistical procedures
+  Can help to reduce confounding bias
+  
+One type of statistical control: subclassification
+  Compare treated and control groups within levels of a confounder
+  Remaining effect can't be due to the confounder 
+  
+Threat to inference: we can only control for observed variable -> treat of unmeasured confounding 
+
+Statistical control on R:
+
+```{r}
+newspapers |>
+  group_by(parent_labour, to_labour) |>
+  summarize(avg_vote = mean(vote_lab_97)) |>
+  pivot_wider(
+    names_from = to_labour,
+    values_from = avg_vote) |>
+  mutate(diff_by_parent = `1` - `0`)
+```
+  
+Before and after in R:
+
+```{r}
+newspapers |>
+  filter(to_labour == 1) |>
+  mutate(
+    vote_change = vote_lab_97 - vote_lab_92) |>
+  summarize(avg_change = mean(vote_change))
+```
+  
+Differences-in-differences in R:
+
+```{r}
+newspapers |>
+  mutate(
+    vote_change = vote_lab_97 - vote_lab_92,
+    to_labour = if_else(to_labour == 1, "switched", "unswitched")
+  ) |>
+  group_by(to_labour) |>
+  summarize(avg_change = mean(vote_change)) |>
+  pivot_wider(
+    names_from = to_labour, 
+    values_from = avg_change
+  ) |>
+  mutate(DID = switched - unswitched)
+```
+  
+  
+  
+  
+  
+  

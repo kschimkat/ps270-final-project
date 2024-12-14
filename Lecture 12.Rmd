@@ -1,0 +1,144 @@
+---
+title: "Lecture 12"
+output: pdf_document
+date: "2024-10-14"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tidying and Joining Data 
+
+## Pivot Longer
+
+First let's load our packages:
+
+```{r}
+library(tidyverse)
+library(ps270data)
+mortality
+```
+
+to convert a data set into the long format, use the pivot_longer() function
+
+mydata |>
+  pivot_longer(
+    cols = <variables to pivot>,
+    names_to = <new vairable to put column names>,
+    values_to = <new variable to put column values>
+)
+
+Let's do it with the mortality data
+
+```{r}
+mortality |>
+  select(-indicator) |>
+  pivot_longer(
+    cols = `1972`:`2020`,
+    names_to = "year",
+    values_to = "child_mortality"
+  )
+```
+
+let's do a line plot
+
+```{r}
+mortality |>
+  select(-indicator) |>
+  pivot_longer(
+    cols = `1972`:`2020`,
+    names_to = "year",
+    values_to = "child_mortality"
+  )  |>
+  mutate(year = as.integer(year)) |>
+  ggplot(mapping = aes(x = year, y = child_mortality, group = country)) +
+  geom_line(alpha = 0.25)
+```
+
+let's practice pivot_longer on another dataset
+
+```{r}
+spotify
+```
+
+```{r}
+spotify |>
+  pivot_longer(cols = c(-`Track Name`, -`Artist`),
+               names_to = "week_of_year",
+               values_to = "rank",
+               names_prefix = "week") |>
+  mutate(week_of_year = as.integer(week_of_year))
+
+```
+
+## Joining Data Sets
+
+```{r}
+library(gapminder)
+gapminder
+```
+
+first, assign our pivoted mortality data to the object mortality_long
+
+```{r}
+mortality_long <- mortality |>
+  select(-indicator) |>
+  pivot_longer(
+    cols = `1972`:`2020`,
+    names_to = "year",
+    values_to = "child_mortality"
+  )  |>
+  mutate(year = as.integer(year))
+```
+
+```{r}
+mortality_long
+```
+
+Check that keys are unique
+
+```{r}
+gapminder |>
+  count(country, year) |>
+  filter(n > 1)
+```
+
+same for the other data
+
+```{r}
+mortality_long |>
+  count(country, year) |>
+  filter(n > 1)
+```
+
+first we use the left_join() function
+
+```{r}
+gapminder |>
+  left_join(mortality_long)
+```
+
+an alternative (that does something different) is inner_join()
+
+```{r}
+gapminder |>
+  inner_join(mortality_long)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
